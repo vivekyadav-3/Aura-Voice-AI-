@@ -4,7 +4,7 @@ Aura is a state-of-the-art voice assistant that runs **100% locally in your web 
 
 By leveraging **WebGPU** and **WebLLM**, Aura downloads a quantized Large Language Model (Llama 3.2 1B) directly into your browser's persistent cache and performs all artificial intelligence inference on your device's graphics card.
 
-![Aura UI Screenshot](https://raw.githubusercontent.com/vivekyadav-3/EmbeddedChat/main/public/aura_screenshot_placeholder.png) *(Note: Add your own actual screenshot here later!)*
+![Aura UI Screenshot](./public/aura_screenshot.png) 
 
 ---
 
