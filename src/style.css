@@ -1,0 +1,219 @@
+:root {
+  --bg-color: #0f111a;
+  --text-color: #ffffff;
+  --aura-color-idle: rgba(100, 150, 255, 0.4);
+  --aura-color-listening: rgba(255, 100, 150, 0.8);
+  --aura-color-thinking: rgba(150, 80, 255, 0.8);
+  --aura-color-speaking: rgba(100, 255, 200, 0.8);
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+  max-width: 600px;
+  padding: 2rem;
+}
+
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  padding: 2rem;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  z-index: 10;
+}
+
+h1 {
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  opacity: 0.9;
+}
+
+.status-text {
+  font-size: 1rem;
+  font-weight: 300;
+  opacity: 0.7;
+  min-height: 1.5rem;
+  transition: opacity 0.3s ease;
+}
+
+.transcript-area {
+  width: 100%;
+  min-height: 80px;
+  max-height: 250px;
+  overflow-y: auto;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: 300;
+  line-height: 1.5;
+  color: #e2e8f0;
+  border: 1px solid var(--glass-border);
+  text-align: left;
+}
+
+/* Custom Scrollbar for Transcript */
+.transcript-area::-webkit-scrollbar {
+  width: 8px;
+}
+.transcript-area::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+.transcript-area::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+}
+.transcript-area::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Aura Orb Visualizer */
+.aura-container {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.aura-orb {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), transparent 60%),
+              var(--aura-color-idle);
+  box-shadow: 0 0 30px var(--aura-color-idle),
+              inset 0 0 20px rgba(255,255,255,0.5);
+  transition: all 0.5s ease;
+  z-index: 2;
+}
+
+.aura-ripple {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 2px solid var(--aura-color-idle);
+  opacity: 0;
+  z-index: 1;
+}
+
+/* States */
+.state-listening .aura-orb {
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), transparent 60%),
+              var(--aura-color-listening);
+  box-shadow: 0 0 50px var(--aura-color-listening);
+  animation: pulse-listen 1.5s infinite alternate;
+}
+.state-listening .aura-ripple {
+  border-color: var(--aura-color-listening);
+  animation: ripple-out 1.5s infinite cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.state-thinking .aura-orb {
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), transparent 50%),
+              var(--aura-color-thinking);
+  box-shadow: 0 0 40px var(--aura-color-thinking);
+  animation: spin-think 2s infinite linear;
+}
+
+.state-speaking .aura-orb {
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), transparent 60%),
+              var(--aura-color-speaking);
+  box-shadow: 0 0 60px var(--aura-color-speaking);
+  animation: pulse-speak 0.4s infinite alternate;
+}
+
+@keyframes pulse-listen {
+  0% { transform: scale(0.95); }
+  100% { transform: scale(1.1); }
+}
+
+@keyframes ripple-out {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+  100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
+}
+
+@keyframes spin-think {
+  0% { transform: rotate(0deg) scale(0.9); border-radius: 50%; }
+  25% { transform: rotate(90deg) scale(1.1); border-radius: 40% 60% 60% 40%; }
+  50% { transform: rotate(180deg) scale(0.9); border-radius: 50%; }
+  75% { transform: rotate(270deg) scale(1.1); border-radius: 60% 40% 40% 60%; }
+  100% { transform: rotate(360deg) scale(0.9); border-radius: 50%; }
+}
+
+@keyframes pulse-speak {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.2); }
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  gap: 1rem;
+}
+
+.mic-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--glass-border);
+  color: white;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+  font-size: 1.5rem;
+}
+
+.mic-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.mic-btn.active {
+  background: var(--aura-color-listening);
+  border-color: transparent;
+  color: #fff;
+}
